@@ -1355,56 +1355,6 @@ fu! s:OpenMulti(...)
 	unl! s:tabct
 endf
 
-function! s:OpenStanPro(...)
-	let @" = s:getinput()
-	let has_marked = exists('s:marked')
-	if !has_marked
-		let line = ctrlp#getcline()
-		if line == '' | retu | en
-		let marked = { 1 : fnamemodify(line, ':p') }
-	en
-	let @" = join(values(has_marked ? s:marked : marked), "\n")
-	let path = @"
-	cal s:PrtExit()
-	let s:haskdeinit = system("ps -e") =~ 'kdeinit'
-	let s:hasdarwin = system("uname -s") =~ 'Darwin'
-  let l:oldssl=&shellslash
-  set noshellslash
-  if has("gui_running")
-    let args = shellescape(path,1)." &"
-  else
-    let args = shellescape(path,1)." > /dev/null"
-  end
-  if has("unix") && executable("gnome-open") && !s:haskdeinit
-    exe "silent !gnome-open ".args
-    let ret= v:shell_error
-  elseif has("unix") && executable("kde-open") && s:haskdeinit
-    exe "silent !kde-open ".args
-    let ret= v:shell_error
-  elseif has("unix") && executable("open") && s:hasdarwin
-    exe "silent !open ".args
-    let ret= v:shell_error
-  elseif has("win32") || has("win64")
-    exe "silent !start explorer ".shellescape(path,1)
-  end
-  let &shellslash=l:oldssl
-  redraw!
-endfunction
-
-fu! s:OpenNerdtree(...)
-	let @" = s:getinput()
-	let has_marked = exists('s:marked')
-	if !has_marked
-		let line = ctrlp#getcline()
-		if line == '' | retu | en
-		let marked = { 1 : fnamemodify(line, ':p') }
-	en
-	let @" = join(values(has_marked ? s:marked : marked), "\n")
-	cal s:PrtExit()
-	let @l=':NERDTree "'
-	execute "@l" 
-endf
-
 fu! s:YankLine(...)
 	let @" = s:getinput()
 	let has_marked = exists('s:marked')
