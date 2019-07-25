@@ -1385,27 +1385,27 @@ function! s:OpenStanPro(...)
 	cal s:PrtExit()
 	let s:haskdeinit = system("ps -e") =~ 'kdeinit'
 	let s:hasdarwin = system("uname -s") =~ 'Darwin'
-  let l:oldssl=&shellslash
-  set noshellslash
-  if has("gui_running")
-    let args = shellescape(path,1)." &"
-  else
-    let args = shellescape(path,1)." > /dev/null"
-  end
-  if has("unix") && executable("gnome-open") && !s:haskdeinit
-    exe "silent !gnome-open ".args
-    let ret= v:shell_error
-  elseif has("unix") && executable("kde-open") && s:haskdeinit
-    exe "silent !kde-open ".args
-    let ret= v:shell_error
-  elseif has("unix") && executable("open") && s:hasdarwin
-    exe "silent !open ".args
-    let ret= v:shell_error
-  elseif has("win32") || has("win64")
-    exe "silent !start explorer ".shellescape(path,1)
-  end
-  let &shellslash=l:oldssl
-  redraw!
+	let l:oldssl=&shellslash
+	set noshellslash
+	if has("gui_running")
+		let args = shellescape(path,1)." &"
+	else
+		let args = shellescape(path,1)." > /dev/null"
+	end
+	if has("unix") && executable("gnome-open") && !s:haskdeinit
+		exe "silent !gnome-open ".args
+		let ret= v:shell_error
+	elseif has("unix") && executable("kde-open") && s:haskdeinit
+		exe "silent !kde-open ".args
+		let ret= v:shell_error
+	elseif has("unix") && executable("open") && s:hasdarwin
+		exe "silent !open ".args
+		let ret= v:shell_error
+	elseif has("win32") || has("win64")
+		exe "silent !start explorer ".shellescape(path,1)
+	end
+	let &shellslash=l:oldssl
+	redraw!
 endfunction
 
 fu! s:OpenNerdtree(...)
